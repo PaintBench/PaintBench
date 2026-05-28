@@ -1,0 +1,40 @@
+name: lint
+
+on:
+  # `push` only on main + `pull_request` for everything else gives us:
+  # always-green proof on main + a single CI run per PR push. Triggering
+  # on every-branch push would double-run while a PR is open (one
+  # push event, one pull_request event) since the concurrency group
+  # below scopes per-ref, not per-SHA.
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel in-progress runs for the same ref on new push
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up uv (with caching keyed on uv.lock)
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install Python and dependencies (core + dev only)
+        # Skip [inference] extra (torch/diffusers — heavy, GPU-only) and
+        # [api] extra (google-genai/openai — would just add API client
+        # deps). Lint only needs core + dev.
+        run: uv sync --all-groups
+
+      - name: Ruff lint
+        run: uv run ruff check src/ scripts/ tests/

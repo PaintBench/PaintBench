@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use PaintBench, please cite the paper."
+type: software
+title: "PaintBench: Deterministic Evaluation of Precise Visual Editing"
+abstract: >-
+  PaintBench evaluates generative image models on MS-Paint-style edits: move
+  a shape, recolor a region, draw a border, complete a grid pattern. Every
+  problem is a deterministic (input_image, instruction, answer_image) triplet
+  generated from a seed, so the answer is pixel-exact and the answer
+  distribution is known by construction.
+authors:
+  - family-names: Xu
+    given-names: Kai
+  - family-names: Brown
+    given-names: Ellis
+  - family-names: Madhu
+    given-names: Shrikar
+  - family-names: Fergus
+    given-names: Rob
+  - family-names: He
+    given-names: He
+  - family-names: Xie
+    given-names: Saining
+url: "https://paintbench.github.io"
+repository-code: "https://github.com/PaintBench/PaintBench"
+license: MIT
+preferred-citation:
+  type: article
+  title: "PaintBench: Deterministic Evaluation of Precise Visual Editing"
+  authors:
+    - family-names: Xu
+      given-names: Kai
+    - family-names: Brown
+      given-names: Ellis
+    - family-names: Madhu
+      given-names: Shrikar
+    - family-names: Fergus
+      given-names: Rob
+    - family-names: He
+      given-names: He
+    - family-names: Xie
+      given-names: Saining
+  journal: "arXiv preprint arXiv:<ARXIV-ID>"
+  year: 2026
+  url: "https://arxiv.org/abs/<ARXIV-ID>"

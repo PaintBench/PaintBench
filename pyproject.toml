@@ -1,0 +1,74 @@
+[project]
+name = "paint-bench"
+version = "1.0.0"
+description = "PaintBench: a precise, deterministic visual editing benchmark"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+dependencies = [
+    "matplotlib>=3.9.0",
+    "numpy>=2.0.0",
+    "pillow>=10.0.0",
+    "tqdm>=4.66.0",
+]
+
+[project.urls]
+Homepage   = "https://paintbench.github.io"
+Repository = "https://github.com/PaintBench/PaintBench"
+Paper      = "https://arxiv.org/abs/<ARXIV-ID>"
+Dataset    = "https://huggingface.co/datasets/PaintBench/PaintBench"
+
+[project.optional-dependencies]
+# Local diffusion inference (needs GPU + PyTorch)
+inference = [
+    "accelerate>=1.0.0",
+    "diffusers>=0.34.0",
+    "einops>=0.8.2",
+    "huggingface-hub>=0.26.0",
+    "psutil>=6.0.0",
+    "torch>=2.5.0",
+    "torchvision>=0.26.0",
+    "transformers>=4.46.0",
+]
+
+# Remote API inference (Gemini / Nano Banana / OpenAI)
+api = [
+    "google-genai>=1.0.0",
+    "openai>=1.0.0",
+]
+
+# HF dataset access (HfBenchmarkSource in src/benchmark_source.py).
+# Enables `--benchmark hf:<repo>@<sha>` to load a published benchmark
+# without a local clone. Decoupled from `inference` so the read path
+# works without the PyTorch / diffusers / transformers stack.
+data = [
+    "datasets>=3.0.0",
+    "huggingface-hub>=0.26.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.0",
+    "ruff>=0.9.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes (unused imports, undefined names, etc.)
+    "W",   # pycodestyle warnings
+]
+ignore = [
+    "E402",  # module-level import not at top -- unavoidable with sys.path.insert pattern
+    "E501",  # line length -- not worth enforcing in research code
+    "E701",  # multiple statements on one line (colon) -- common in compact conditionals
+    "E702",  # multiple statements on one line (semicolon) -- common in compact assignments
+    "E741",  # ambiguous variable name -- I/O/A are conventional in image processing code
+]
